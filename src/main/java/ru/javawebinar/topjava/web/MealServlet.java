@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -71,6 +73,16 @@ public class MealServlet extends HttpServlet {
                         restController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
+                break;
+            case "filter":
+                log.info("get all with filter");
+                request.setAttribute("meals", restController.getAllWithFilter(
+                        !request.getParameter("startDate").isEmpty() ? LocalDate.parse(request.getParameter("startDate")) : null,
+                        !request.getParameter("startTime").isEmpty() ? LocalTime.parse(request.getParameter("startTime")) : null,
+                        !request.getParameter("endTime").isEmpty() ? LocalTime.parse(request.getParameter("endTime")) : null,
+                        !request.getParameter("endDate").isEmpty() ? LocalDate.parse(request.getParameter("endDate")) : null
+                ));
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:

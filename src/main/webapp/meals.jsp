@@ -20,6 +20,29 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
+    <h2>Моя еда</h2>
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter"/>
+        <dl>
+            <dt>От даты (включая)</dt>
+            <dd><input type="date" value="${param.startDate}" name="startDate" autocomplete="on"></dd>
+        </dl>
+        <dl>
+            <dt>До даты (включая)</dt>
+            <dd><input type="date" value="${param.endDate}" name="endDate" autocomplete="on"></dd>
+        </dl>
+        <dl>
+            <dt>От времени (включая)</dt>
+            <dd><input type="time" value="${param.startTime}" name="startTime" autocomplete="on"></dd>
+        </dl>
+        <dl>
+            <dt>До времени (исключая)</dt>
+            <dd><input type="time" value="${param.endTime}" name="endTime" autocomplete="on"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+        <button onclick="document.location='meals'" type="button">Cancel</button>
+    </form>
+    <hr/>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br><br>
