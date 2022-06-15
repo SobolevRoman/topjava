@@ -18,6 +18,8 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
+
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
@@ -35,7 +37,6 @@ public class MealServlet extends HttpServlet {
         appCtx.close();
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -46,6 +47,7 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
 
+        meal.setUserId(authUserId());
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         if (meal.isNew()) {
             restController.create(meal);
@@ -76,11 +78,15 @@ public class MealServlet extends HttpServlet {
                 break;
             case "filter":
                 log.info("get all with filter");
+                String startDate = request.getParameter("startDate");
+                String startTime = request.getParameter("startTime");
+                String endTime = request.getParameter("endTime");
+                String endDate = request.getParameter("endDate");
                 request.setAttribute("meals", restController.getAllWithFilter(
-                        !request.getParameter("startDate").isEmpty() ? LocalDate.parse(request.getParameter("startDate")) : null,
-                        !request.getParameter("startTime").isEmpty() ? LocalTime.parse(request.getParameter("startTime")) : null,
-                        !request.getParameter("endTime").isEmpty() ? LocalTime.parse(request.getParameter("endTime")) : null,
-                        !request.getParameter("endDate").isEmpty() ? LocalDate.parse(request.getParameter("endDate")) : null
+                        startDate.isEmpty() ? null : LocalDate.parse(startDate) ,
+                        startTime.isEmpty() ? null : LocalTime.parse(startTime),
+                        endTime.isEmpty() ? null : LocalTime.parse(endTime),
+                        endDate.isEmpty() ? null : LocalDate.parse(endDate)
                 ));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;

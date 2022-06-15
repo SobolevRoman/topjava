@@ -39,6 +39,6 @@ public class MealService {
     }
 
     public List<Meal> getAllWithFilter(int userId, LocalDate start, LocalDate end) {
-        return repository.getAllWithFilter(userId, start, end);
+        return repository.getAllWithFilterByDate(userId, start, end);
     }
 }

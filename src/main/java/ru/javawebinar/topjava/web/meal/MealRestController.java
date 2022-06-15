@@ -19,7 +19,7 @@ import static ru.javawebinar.topjava.web.SecurityUtil.authUserId;
 
 @Controller
 public class MealRestController {
-    private static final Logger logger = LoggerFactory.getLogger(MealRestController.class);
+    private static final Logger log = LoggerFactory.getLogger(MealRestController.class);
     private final MealService service;
 
     public MealRestController(MealService service) {
@@ -27,29 +27,29 @@ public class MealRestController {
     }
 
     public Meal create(Meal meal) {
-        logger.info("create {}", meal);
+        log.info("create {}", meal);
         checkNew(meal);
         return service.create(meal, authUserId());
     }
 
     public void update(Meal meal, int id) {
-        logger.info("update {}", meal);
+        log.info("update {}", meal);
         assureIdConsistent(meal, id);
         service.update(meal, authUserId());
     }
 
     public void delete(int id) {
-        logger.info("delete meal by id - {}", id);
+        log.info("delete meal by id - {}", id);
         service.delete(id, authUserId());
     }
 
     public Meal get(int id) {
-        logger.info("get meal by id - {}", id);
+        log.info("get meal by id - {}", id);
         return service.get(id, authUserId());
     }
 
     public List<MealTo> getAll() {
-        logger.info("get all meals without filtering");
+        log.info("get all meals without filtering");
         return MealsUtil.getTos(
                 service.getAll(authUserId()),
                 authUserCaloriesPerDay()
@@ -57,7 +57,7 @@ public class MealRestController {
     }
 
     public List<MealTo> getAllWithFilter(LocalDate startDate, LocalTime startTime, LocalTime endTime, LocalDate endDate) {
-        logger.info("get all meals with filter");
+        log.info("get all meals with filter");
         if (startDate == null) {
             startDate = LocalDate.MIN;
         }
