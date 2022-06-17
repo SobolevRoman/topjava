@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class InMemoryMealRepository implements MealRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryMealRepository.class);
     private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
-   // private final Map<Integer, Map<Integer, Meal>> repo = new ConcurrentHashMap<>();
+    //private final Map<Integer, Map<Integer, Meal>> repo = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
@@ -41,7 +41,7 @@ public class InMemoryMealRepository implements MealRepository {
         }
         // handle case: update, but not present in storage
         log.info("update {}", meal);
-        if (checkMealForUser(meal, userId)) {
+        if (checkMealForUser(meal.getId(), userId)) {
             return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
         }
         return null;
@@ -50,20 +50,23 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete meal with id {}", id);
-        Meal meal = repository.get(id);
-        return checkMealForUser(meal, userId) && repository.remove(id) != null;
+        return checkMealForUser(id, userId) && repository.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         log.info("get meal with id {}", id);
-        Meal meal = repository.get(id);
-        return checkMealForUser(meal, userId) ? meal : null;
+        return checkMealForUser(id, userId) ? repository.get(id) : null;
     }
 
-    private boolean checkMealForUser(Meal meal, int userId) {
-        log.info("check meal {} to user with id {}", meal, userId);
-        return meal != null && userId == repository.get(meal.getId()).getUserId();
+    private synchronized boolean checkMealForUser(int id, int userId) {
+        log.info("check meal with id {} to user with id {}", id, userId);
+        Meal mealInRepo = repository.get(id);
+        if (mealInRepo == null){
+            log.debug("meal with id {} not found in repository", id);
+            return false;
+        }
+        return userId == mealInRepo.getUserId();
     }
 
     @Override
