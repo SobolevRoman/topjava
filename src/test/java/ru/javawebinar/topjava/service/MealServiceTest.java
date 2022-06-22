@@ -15,7 +15,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -65,25 +65,27 @@ public class MealServiceTest {
     }
 
     @Test
-    public void getBetweenInclusive() {
+    public void getBetweenWithDefaultDate() {
         List<Meal> mealsUserMaxInterval = service.getBetweenInclusive(null, null, USER_ID);
         assertMatch(mealsUserMaxInterval, userMealsTestData);
         List<Meal> mealsAdminMaxInterval = service.getBetweenInclusive(null, null, ADMIN_ID);
         assertMatch(mealsAdminMaxInterval, adminMealsTestData);
+    }
+
+    @Test
+    public void getBetweenInclusive() {
         assertMatch(service.getBetweenInclusive(DATE_START, DATE_END, USER_ID), userMealsWithDateInterval);
     }
 
     @Test
     public void getAll() {
-        List<Meal> userMeals = service.getAll(USER_ID);
-        assertMatch(userMeals, userMealsTestData);
-        List<Meal> adminMeals = service.getAll(ADMIN_ID);
-        assertMatch(adminMeals, adminMealsTestData);
+        assertMatch(service.getAll(USER_ID), userMealsTestData);
+        assertMatch(service.getAll(ADMIN_ID), adminMealsTestData);
     }
 
     @Test
     public void getAllNotFound() {
-        assertThrows(NotFoundException.class, () -> service.getAll(NOT_FOUND));
+        assertTrue(service.getAll(NOT_FOUND).isEmpty());
     }
 
     @Test
