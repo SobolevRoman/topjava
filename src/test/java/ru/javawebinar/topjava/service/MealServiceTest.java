@@ -1,7 +1,13 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,6 +19,10 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -26,9 +36,37 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static final Map<String, Long> map = new HashMap<>();
 
     @Autowired
     private MealService service;
+
+    @Rule
+    public Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            map.put(description.getMethodName(), nanos);
+            log.info("{} - {}ms", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
+        }
+    };
+
+    @AfterClass
+    public static void after() {
+        StringBuilder stringBuilder = new StringBuilder("\n");
+        map.forEach((key, value) ->
+                stringBuilder
+                        .append("Method - ")
+                        .append(key)
+                        .append(" : ")
+                        .append(TimeUnit.NANOSECONDS.toMillis(value))
+                        .append("ms")
+                        .append("\n"));
+        log.info(stringBuilder.toString());
+        AtomicLong totalCount = new AtomicLong();
+        map.values().forEach(val -> totalCount.set(totalCount.get() + TimeUnit.NANOSECONDS.toMillis(val)));
+        log.info("\nTotal time for the test class - {}ms", totalCount);
+    }
 
     @Test
     public void delete() {
