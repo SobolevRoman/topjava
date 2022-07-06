@@ -21,7 +21,6 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Query(value = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC")
     List<Meal> getAllSorted(@Param("userId") int userId);
 
-
     @Query(value = """
              SELECT m FROM Meal m 
              WHERE m.user.id=:userId 
