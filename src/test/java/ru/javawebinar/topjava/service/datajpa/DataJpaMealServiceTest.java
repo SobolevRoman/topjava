@@ -7,13 +7,14 @@ import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.AbstractMealServiceTest;
 
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.UserTestData.USER_ID;
+import static ru.javawebinar.topjava.UserTestData.*;
 
 @ActiveProfiles(Profiles.DATAJPA)
 public class DataJpaMealServiceTest extends AbstractMealServiceTest {
     @Test
-    public void getWithUser(){
+    public void getWithUser() {
         Meal actual = service.getWithUser(MEAL1_ID, USER_ID);
-        MEAL_MATCHER_WITH_USER.assertMatch(actual, meal1);
+        MEAL_MATCHER.assertMatch(actual, meal1);
+        USER_MATCHER.assertMatch(actual.getUser(), user);
     }
 }

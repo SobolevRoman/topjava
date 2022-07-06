@@ -48,7 +48,7 @@ public abstract class AbstractJdbcMealRepository implements MealRepository {
         return meal;
     }
 
-    protected MapSqlParameterSource build(Meal meal, int userId){
+    protected MapSqlParameterSource build(Meal meal, int userId) {
         return new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
