@@ -54,7 +54,6 @@ public class User extends AbstractNamedEntity {
     @Range(min = 10, max = 10000)
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
-    /*@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)*/
     @OneToMany(mappedBy = "user")
     @OrderBy("dateTime DESC")
     private List<Meal> meals;
