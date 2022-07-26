@@ -13,6 +13,7 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
     public static final MatcherFactory.Matcher<Meal> MEAL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Meal.class, "user");
+    public static final MatcherFactory.Matcher<MealTo> MATCHER_TO = MatcherFactory.usingIgnoringFieldsComparator(MealTo.class);
 
     public static final int NOT_FOUND = 10;
     public static final int MEAL1_ID = START_SEQ + 3;
@@ -37,6 +38,12 @@ public class MealTestData {
             MealsUtil.createTo(meal3, false),
             MealsUtil.createTo(meal2, false),
             MealsUtil.createTo(meal1, false)
+    );
+
+    public static final List<MealTo> filterMealTos = List.of(
+            MealsUtil.createTo(meal7, true),
+            MealsUtil.createTo(meal6, true),
+            MealsUtil.createTo(meal5, true)
     );
 
     public static Meal getNew() {
