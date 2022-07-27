@@ -21,7 +21,6 @@ import static ru.javawebinar.topjava.MealTestData.*;
 
 class MealRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealRestController.REST_URL + '/';
-    private static final String FILTERING = "filter?startDateTime=2020-01-31T09:00&endDateTime=2020-01-31T22:00";
 
     @Autowired
     private MealService service;
@@ -77,10 +76,29 @@ class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + FILTERING))
+    void getBetweenToDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(
+                REST_URL + "/filter?" + PARAM_START_END_DATE))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(MATCHER_TO.contentJson(filterMealTos));
+                .andExpect(MATCHER_TO.contentJson(filterMealTosDate));
+    }
+
+    @Test
+    void getBetweenToTime() throws Exception {
+        perform(MockMvcRequestBuilders.get(
+                REST_URL + "/filter?" + PARAM_START_END_TIME))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(MATCHER_TO.contentJson(filterMealTosTime));
+    }
+
+    @Test
+    void getBetweenEmpty() throws Exception {
+        perform(MockMvcRequestBuilders.get(
+                REST_URL + "/filter?" + PARAM_DATE_TIME_EMPTY))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(MATCHER_TO.contentJson(mealTos));
     }
 }

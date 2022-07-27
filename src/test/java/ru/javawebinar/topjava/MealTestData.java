@@ -15,6 +15,10 @@ public class MealTestData {
     public static final MatcherFactory.Matcher<Meal> MEAL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Meal.class, "user");
     public static final MatcherFactory.Matcher<MealTo> MATCHER_TO = MatcherFactory.usingIgnoringFieldsComparator(MealTo.class);
 
+    public static final String PARAM_START_END_DATE = "startDate=2020-01-31&startTime=&endDate=2020-02-01&endTime=";
+    public static final String PARAM_START_END_TIME = "startDate=&startTime=18:00&endDate=&endTime=23:00";
+    public static final String PARAM_DATE_TIME_EMPTY = "startDate=&startTime=&endDate=&endTime=";
+
     public static final int NOT_FOUND = 10;
     public static final int MEAL1_ID = START_SEQ + 3;
     public static final int ADMIN_MEAL_ID = START_SEQ + 10;
@@ -40,10 +44,16 @@ public class MealTestData {
             MealsUtil.createTo(meal1, false)
     );
 
-    public static final List<MealTo> filterMealTos = List.of(
+    public static final List<MealTo> filterMealTosDate = List.of(
             MealsUtil.createTo(meal7, true),
             MealsUtil.createTo(meal6, true),
-            MealsUtil.createTo(meal5, true)
+            MealsUtil.createTo(meal5, true),
+            MealsUtil.createTo(meal4, true)
+    );
+
+    public static final List<MealTo> filterMealTosTime = List.of(
+            MealsUtil.createTo(meal7, true),
+            MealsUtil.createTo(meal3, false)
     );
 
     public static Meal getNew() {
