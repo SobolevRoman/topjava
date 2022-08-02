@@ -89,11 +89,11 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getWithMeals() throws Exception {
         ResultActions action = perform(MockMvcRequestBuilders.get(
-                REST_URL + "with-meals/" + ADMIN_ID))
+                REST_URL + ADMIN_ID + "/with-meals"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
         User admin = USER_MATCHER_WITH_MEALS.readFromJson(action);
         USER_MATCHER.assertMatch(admin, UserTestData.admin);
-        MealTestData.MEAL_MATCHER.assertMatch(admin.getMeals(), MealTestData.mealsAdmin);
+        MealTestData.MEAL_MATCHER.assertMatch(admin.getMeals(), MealTestData.adminMeals);
     }
 }

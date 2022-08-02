@@ -30,7 +30,7 @@ class MealRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER_TO.contentJson(mealTos));
+                .andExpect(MEAL_TO_MATCHER.contentJson(mealTos));
     }
 
     @Test
@@ -81,7 +81,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 REST_URL + "/filter?" + PARAM_START_END_DATE))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(MATCHER_TO.contentJson(filterMealTosDate));
+                .andExpect(MEAL_TO_MATCHER.contentJson(filterMealTosDate));
     }
 
     @Test
@@ -90,7 +90,7 @@ class MealRestControllerTest extends AbstractControllerTest {
                 REST_URL + "/filter?" + PARAM_START_END_TIME))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(MATCHER_TO.contentJson(filterMealTosTime));
+                .andExpect(MEAL_TO_MATCHER.contentJson(filterMealTosTime));
     }
 
     @Test
@@ -99,6 +99,6 @@ class MealRestControllerTest extends AbstractControllerTest {
                 REST_URL + "/filter?" + PARAM_DATE_TIME_EMPTY))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(MATCHER_TO.contentJson(mealTos));
+                .andExpect(MEAL_TO_MATCHER.contentJson(mealTos));
     }
 }

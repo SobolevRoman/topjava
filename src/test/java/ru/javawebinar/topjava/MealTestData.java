@@ -13,7 +13,7 @@ import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
     public static final MatcherFactory.Matcher<Meal> MEAL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Meal.class, "user");
-    public static final MatcherFactory.Matcher<MealTo> MATCHER_TO = MatcherFactory.usingIgnoringFieldsComparator(MealTo.class);
+    public static final MatcherFactory.Matcher<MealTo> MEAL_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(MealTo.class);
 
     public static final String PARAM_START_END_DATE = "startDate=2020-01-31&startTime=&endDate=2020-02-01&endTime=";
     public static final String PARAM_START_END_TIME = "startDate=&startTime=18:00&endDate=&endTime=23:00";
@@ -34,7 +34,7 @@ public class MealTestData {
     public static final Meal adminMeal2 = new Meal(ADMIN_MEAL_ID + 1, of(2020, Month.JANUARY, 31, 21, 0), "Админ ужин", 1500);
 
     public static final List<Meal> meals = List.of(meal7, meal6, meal5, meal4, meal3, meal2, meal1);
-    public static final List<Meal> mealsAdmin = List.of(adminMeal2, adminMeal1);
+    public static final List<Meal> adminMeals = List.of(adminMeal2, adminMeal1);
     public static final List<MealTo> mealTos = List.of(
             MealsUtil.createTo(meal7, true),
             MealsUtil.createTo(meal6, true),
